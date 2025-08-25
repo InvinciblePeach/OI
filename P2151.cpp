@@ -1,10 +1,15 @@
 #include <bits/stdc++.h>
+#define int long long
 
 using namespace std;
 typedef long long ll;
 
-const int MAXN = 130, mod = 45989;
-int n, m, ans, k, s, t, u[MAXN], v[MAXN], cnt;
+const int MAXN = 140, mod = 45989;
+int n, m, k, s, t, cnt, ans;
+
+struct Edge {
+    int u, v;
+} e[MAXN];
 
 struct Matrix {
     int a[MAXN][MAXN];
@@ -19,9 +24,9 @@ struct Matrix {
 
     Matrix operator*(const Matrix &o) {
         Matrix res(0);
-        for (int i = 1; i < cnt; i++)
-            for (int k = 1; k < cnt; k++)
-                for (int j = 1; j < cnt; j++)
+        for (int i = 1; i <= cnt; i++)
+            for (int k = 1; k <= cnt; k++)
+                for (int j = 1; j <= cnt; j++)
                     (res[i][j] += a[i][k] * o.a[k][j] % mod) %= mod;
         return res;
     }
@@ -41,19 +46,22 @@ signed main() {
     cin.tie(0), cout.tie(0);
 
     cin >> n >> m >> k >> s >> t;
-    s++, t++, u[++cnt] = 0, v[cnt] = s;
+    s++, t++;
+    e[++cnt] = {0, s};
     for (int i = 1, u, v; i <= m; i++) {
-        cin >> u >> v, u++, v++;    
-        ::u[++cnt] = u, ::v[cnt] = v;
-        ::u[++cnt] = v, ::v[cnt] = u;
+        cin >> u >> v, u++, v++;
+        e[++cnt] = {u, v};
+        e[++cnt] = {v, u};
     }
-    for (int i = 1; i <= cnt; i++) {
-        for (int j = 1; j <= cnt; j++) {
-            if ((i ^ j) && (i ^ j ^ 1) && v[i] == u[j]) g[i][j] = 1;
-        }
-    }
+    for (int i = 1; i <= cnt; i++)
+        for (int j = 1; j <= cnt; j++)
+            if (i != j && i != (j ^ 1))
+                if (e[i].v == e[j].u) g[i][j] = 1;
+
     auto res = qpow(g, k);
-    for (int i = 1; i <= cnt; i++) if (v[i] == t) (ans += res[1][i]) %= mod;
+    for (int i = 1; i <= cnt; i++)
+        if (e[i].v == t)
+            (ans += res[1][i]) %= mod;
     cout << ans << '\n';
 
     return 0;

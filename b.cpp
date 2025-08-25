@@ -1,37 +1,30 @@
 #include <bits/stdc++.h>
-#define rep(x, y, z) for (int x = (y); x <= z; x++)
-#define per(x, y, z) for (int x = (y); x >= z; x--)
 
 using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
 
-const int MAXN = 5e5 + 10;
-int n, m, sum, cnt[MAXN];
-
-int calc(int x) {
-    int res = 0;
-    while (x) res++, x /= 10;
-    return res;
-}
+const int MAXN = 110;
+int n, a[MAXN];
+pii b[MAXN];
 
 signed main() {
     ios::sync_with_stdio(0);
     cin.tie(0), cout.tie(0);
 
-    cin >> n >> m;
-    rep(i, 1, n) {
-        int a;
-        cin >> a;
-        if (!cnt[a]) {
-            if (!sum)
-                sum += calc(a);
-            else
-                sum += calc(a) + 1;
-        }
-        cnt[a] = sum;
+    cin >> n;
+    for (int i = 1; i <= n; i++)
+        cin >> a[i];
+    for (int i = 1; i <= n; i++)
+        b[i] = {a[i], i};
+    sort(b + 1, b + 1 + n);
+    int mx = 1, cur = 1;
+    for (int i = 2; i <= n; i++) {
+        if (b[i].second > b[i - 1].second)
+            cur++, mx = max(mx, cur);
+        else
+            cur = 1;
     }
-    rep(i, 1, m) cout << cnt[i] << " \n"[i == m];
-
+    cout << n - mx << '\n';
     return 0;
 }

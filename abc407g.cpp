@@ -3,9 +3,9 @@
 
 using namespace std;
 
-const int MAXN = 2010, INF = 0x7f7f7f7f7f7f7f7f, base = 1e12;
-int n, m, a[MAXN][MAXN], sum, s, t;
-int cst, dis[MAXN], cur[MAXN], ans = LLONG_MAX;
+const int MAXN = 2010, INF = 0x7f7f7f7f7f7f7f7f;
+int n, m, a[MAXN][MAXN], sum, s, t, w;
+int cst, dis[MAXN], cur[MAXN], ans = INF;
 bitset<MAXN> vis;
 int num(int i, int j) { return (i - 1) * m + j; }
 
@@ -39,7 +39,7 @@ bool spfa() {
         }
     }
     memset(cur, 0, sizeof(cur));
-    return dis[t] != INF;
+    return dis[t] != 1e18;
 }
 
 int dfs(int u, int lim) {
@@ -63,7 +63,7 @@ int mcmf() {
     int res = 0, tmp;
     while (spfa())
         while (tmp = dfs(s, INF))
-            res += tmp, ans = min(ans, cst - base * res);
+            res += tmp, ans = min(ans, cst);
     return res;
 }
 
@@ -72,24 +72,22 @@ signed main() {
     cin.tie(0), cout.tie(0);
 
     cin >> n >> m;
-    s = 0, t = n * m + 1;
+    s = 0, w = n * m + 1, t = w + 1;
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= m; j++)
             cin >> a[i][j], sum += a[i][j];
     for (int i = 1; i <= n; i++)
         for (int j = 1; j <= m; j++)
-            if ((i ^ j) & 1) add(num(i, j), t, 1, 0);
-            else add(s, num(i, j), 1, 0);
+            if ((i ^ j) & 1) add(num(i, j), t, 1, 0), add(w, num(i, j), 1, 0);
+            else add(s, num(i, j), 1, 0), add(num(i, j), w, 1, 0);
     for (int i = 1; i <= n; i++)
         for (int j = 1; j < m; j++)
-            if (a[i][j] + a[i][j + 1] < 0)
-                add(num(i, j + ((i ^ j) & 1)), num(i, j + !((i ^ j) & 1)), 1, a[i][j] + a[i][j + 1] + base);
+            add(num(i, j + ((i ^ j) & 1)), num(i, j + !((i ^ j) & 1)), 1, a[i][j] + a[i][j + 1]);
     for (int i = 1; i < n; i++)
         for (int j = 1; j <= m; j++)
-            if (a[i][j] + a[i + 1][j] < 0)
-                add(num(i + ((i ^ j) & 1), j), num(i + !((i ^ j) & 1), j), 1, a[i][j] + a[i + 1][j] + base);
+            add(num(i + ((i ^ j) & 1), j), num(i + !((i ^ j) & 1), j), 1, a[i][j] + a[i + 1][j]);
     mcmf();
-    cout << sum - ans << '\n';
+    cout << sum - cst << '\n';
 
     return 0;
 }

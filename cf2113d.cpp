@@ -3,8 +3,8 @@
 using namespace std;
 typedef long long ll;
 
-const int MAXN = 5e5 + 10;
-int T, n, a[MAXN], b[MAXN], m1[MAXN], m2[MAXN], m3[MAXN], ma[MAXN];
+const int MAXN = 1e5 + 10;
+int T, n, a[MAXN], b[MAXN], pre[MAXN], suf[MAXN];
 
 signed main() {
     ios::sync_with_stdio(0);
@@ -13,30 +13,33 @@ signed main() {
     cin >> T;
     while (T-- > 0) {
         cin >> n;
-        m1[0] = m2[0] = m3[0] = 0x3f3f3f3f;
-        m3[n + 1] = -0x3f3f3f3f;
-        ma[n + 1] = -0x3f3f3f3f;
-        for (int i = 1; i <= n; i++) {
-            cin >> a[i];
-            m1[i] = m1[i - 1];
-            m2[i] = m2[i - 1];
-            if (m1[i] > a[i]) {
-                m2[i] = m1[i];
-                m1[i] = a[i];
-            } else if (m2[i] > a[i])
-                m2[i] = a[i];
-        }
-        for (int i = 1; i <= n; i++)
-            cin >> b[i];
-        for (int i = n; i >= 1; i--)
-            ma[i] = max(ma[i + 1], a[i]);
-        for (int i = 1; i <= n; i++)
-            m3[i] = min(m3[i - 1], b[i]);
-        for (int ans = n; ans >= 0; ans--)
-            if (max(m1[ans], min(m2[ans], ma[ans + 1])) > m3[n - ans + 1]) {
-                cout << ans << '\n';
-                break;
+        pre[1] = 1, suf[n] = n;
+        for (int i = 2; i <= n; i++)
+            cin >> a[i], pre[i] = (a[i] < a[pre[i - 1]] ? i : pre[i - 1]);
+        for (int i = n - 1; i; i--)
+            suf[i] = (a[i] > a[suf[i + 1]] ? i : suf[i + 1]);
+        for (int i = 1; i <= n; i++) cin >> b[i];
+        auto calc = [=]() -> int {
+            int l = 1, r = 1, res = 0;
+            for (int i = 1; i <= n; i++) {
+                if (a[l] > b[r])
+                    res++, l++;
+                else
+                    r++;
             }
+            return res;
+        };
+        int l = calc(), r = n + 1;
+        while (l + 1 < r) {
+            int mid = (l + r) >> 1;
+            swap(a[pre[mid - 1]], a[suf[mid]]);
+            if (calc() >= mid)
+                l = mid;
+            else
+                r = mid;
+            swap(a[pre[mid - 1]], a[suf[mid]]);
+        }
+        cout << l << '\n';
     }
 
     return 0;
