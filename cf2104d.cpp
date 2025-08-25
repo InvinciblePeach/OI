@@ -4,7 +4,7 @@
 using namespace std;
 typedef long long ll;
 
-const int MAXN = 5e6 + 10;
+const int MAXN = 7e6 + 10;
 int t, n, a[MAXN], sum[MAXN];
 bitset<MAXN> p;
 vector<int> prime;
@@ -26,7 +26,7 @@ void init() {
 void solve() {
     cin >> n;
     // if (n == 0) return cout << 0 << '\n', void();
-    // if (n == 1) return cout << -1 << '\n', void();
+    // if (n == 1) return cout << 0 << '\n', void();
     for (int i = 1; i <= n; i++)
         cin >> a[i];
     sort(a + 1, a + 1 + n, greater<>());

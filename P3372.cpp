@@ -4,7 +4,7 @@
 using namespace std;
 
 const int MAXN = 100010;
-struct node {
+struct Node {
     int l, r;
     int sum, tag;
 } t[MAXN << 2];
@@ -25,8 +25,8 @@ void build(int p, int l, int r) {
 }
 
 void modify(int p, int val, int l, int r) {
-    t[p].sum += val * (r - l + 1);
     if (l == t[p].l && t[p].r == r) {
+        t[p].sum += val * (t[p].r - t[p].l + 1);
         t[p].tag += val;
         return;
     }

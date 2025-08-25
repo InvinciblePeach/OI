@@ -3,18 +3,19 @@
 using namespace std;
 typedef long long ll;
 
-const int MAXV = (1 << 10) - 1;
+const int MAXN = 1e5, mod = 1e9;
 mt19937 rnd(chrono::system_clock::now().time_since_epoch().count());
-int n = rnd() % 999 + 2, m = rnd() % (n + 1);
 
 signed main() {
     ios::sync_with_stdio(0);
     cin.tie(0), cout.tie(0);
 
-    cout << n << ' ' << m << '\n';
-    for (int i = 1; i <= m; i++) {
-        int u = rnd() % n + 1, v = rnd() % n + 1, w = rnd() & MAXV;
-        cout << u << ' ' << v << ' ' << w << '\n';
+    cout << 1 << '\n';
+    cout << MAXN << '\n';
+    for (int i = 1; i <= MAXN; i++) cout << (i & 1 ? 114514 : 1919810) << " \n"[i == MAXN];
+    cout << MAXN << '\n';
+    for (int i = 1; i <= MAXN; i++) {
+        cout << 2 << ' ' << 1 << ' ' << MAXN << ' ' << 1919810 << '\n';
     }
 
     return 0;

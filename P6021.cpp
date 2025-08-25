@@ -77,7 +77,7 @@ void build(int p, int l, int r) {
 }
 
 void modify(int p, int x) {
-    if (t[p].l == t[p].r) return t[p].tag = val[dfn[t[p].l]], void();
+    if (t[p].l == t[p].r) return t[p].tag = val[dfn[x]], void();
 
     if (x <= t[lc(p)].r) modify(lc(p), x);
     else modify(rc(p), x);
@@ -85,7 +85,7 @@ void modify(int p, int x) {
 }
 
 Matrix query(int p, int l, int r) {
-    if (t[p].l == t[p].r) return t[p].tag;
+    if (l <= t[p].l && t[p].r <= r) return t[p].tag;
 
     Matrix res;
     res.init();

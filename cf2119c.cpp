@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#define int long long
+#define int unsigned long long
 
 using namespace std;
 typedef long long ll;
@@ -17,13 +17,18 @@ signed main() {
             cout << "-1\n";
             continue;
         }
-        if ((n & 1) || k <= n - 2) {
+        if (n & 1) {
             cout << l << '\n';
             continue;
         }
-        int H = 63 - __builtin_clzll(l);
-        ll u = 1ll << (H + 1);
-        if (u <= r) cout << u << '\n';
+        int t = 0;
+        for (int i = 0; i < 63; i++) if (l >> i & 1) t = i;
+        int ans = (1 << (t + 1));
+        assert(ans > l);
+        if (ans <= r) {
+            if (k <= n - 2) cout << l << '\n';
+            else cout << ans << '\n';
+        }
         else cout << "-1\n";
     }
 
