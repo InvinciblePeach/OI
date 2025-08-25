@@ -21,7 +21,8 @@ namespace kruskal {
     void merge(int x, int y) { fa[get(x)] = get(y); }
 
     void work() {
-        for (int i = 1; i <= n; i++) fa[i] = i;
+        for (int i = 1; i <= n; i++)
+            fa[i] = i;
         sort(e + 1, e + m + 1);
         for (int i = 1; i <= m; i++) {
             auto [u, v, w] = e[i];
@@ -40,7 +41,8 @@ namespace Heap {
     void insert(int x) { q.emplace(x); }
     void erase(int x) { del.emplace(x); }
     int top() {
-        while (!del.empty() && q.top() == del.top()) q.pop(), del.pop();
+        while (!del.empty() && q.top() == del.top())
+            q.pop(), del.pop();
         return q.top();
     }
 } // namespace Heap
@@ -60,9 +62,11 @@ signed main() {
     cin.tie(0), cout.tie(0);
 
     cin >> n >> m >> k >> q;
-    for (int i = 1, u, v, w; i <= m; i++) cin >> e[i].u >> e[i].v >> e[i].w;
+    for (int i = 1, u, v, w; i <= m; i++)
+        cin >> e[i].u >> e[i].v >> e[i].w;
     work();
-    for (int i = 1; i <= n; i++) cin >> a[i];
+    for (int i = 1; i <= n; i++)
+        cin >> a[i];
     dfs(1, 0);
     while (q-- > 0) {
         static int u, x;
