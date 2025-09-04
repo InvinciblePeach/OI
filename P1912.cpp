@@ -2,17 +2,18 @@
 
 using namespace std;
 using ll = long long;
+using ld = long double;
 using lll = __int128;
 using pii = pair<int, int>;
 
 const int MAXN = 1e5 + 10;
 int T, n, m, p, sum[MAXN], k[MAXN], pre[MAXN];
-lll dp[MAXN];
+ld dp[MAXN];
 int q[MAXN], l, r;
 string s[MAXN];
 
-lll qpow(lll a, int b) {
-    lll res = 1;
+ld qpow(ld a, int b) {
+    ld res = 1;
     while (b) {
         if (b & 1) res *= a;
         if (b >>= 1) a *= a;
@@ -20,10 +21,10 @@ lll qpow(lll a, int b) {
     return res;
 }
 
-lll calc(int i, int j) { return dp[j] + qpow(abs(sum[i] - sum[j] - m), p); }
+ld calc(int i, int j) { return dp[j] + qpow(abs(sum[i] - sum[j] - m), p); }
 
 int find(int x, int y) {
-    int l = x, r = n + 1, res = 0;
+    int l = x, r = n + 1, res = n + 1;
     while (l <= r) {
         int mid = (l + r) >> 1;
         if (calc(mid, x) >= calc(mid, y))
@@ -35,9 +36,6 @@ int find(int x, int y) {
 }
 
 signed main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0), cout.tie(0);
-
     cin >> T;
     while (T-- > 0) {
         cin >> n >> m >> p;
@@ -52,9 +50,9 @@ signed main() {
             q[++r] = i;
         }
         if (dp[n] > 1e18) {
-            cout << "Too hard to arrange\n";
+            printf("Too hard to arrange\n");
         } else {
-            cout << (ll)dp[n] << '\n';
+            printf("%.0LF\n", dp[n]);
             q[r = 0] = n;
             for (int i = n; i; q[++r] = i = pre[i]) {
             }
