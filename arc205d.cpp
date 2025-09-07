@@ -32,6 +32,7 @@ signed main() {
             g[p].emplace_back(i);
         }
 
+        ans = 0;
         dfs(1);
         cout << ans << '\n';
     }
