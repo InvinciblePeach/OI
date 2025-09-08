@@ -5,18 +5,18 @@ using ll = long long;
 using pii = pair<int, int>;
 
 const int MAXN = 5e5 + 10;
-int T, n, top, ans, dp[MAXN];
+int T, n, dp[MAXN], siz[MAXN], fa[MAXN];
 vector<int> g[MAXN];
 
-void dfs(int u) {
-    int sum = 0, mx = 0;
+int dfs(int u, int val) {
+    int mx = 0, son = 0, res = 0;
+    if (val >= 1) val--, res++;
     for (auto v : g[u]) {
-        dfs(v);
-        sum += dp[v], mx = max(mx, dp[v]);
+        if (siz[v] > mx) mx = siz[v], son = v;
     }
-    int tmp = min(sum - mx, sum >> 1);
-    ans += tmp;
-    dp[u] = sum - (tmp << 1) + 1;
+    int sum = siz[u] - mx - 1;
+    if (mx <= val + sum) return res + ((siz[u] + val - 1) >> 1);
+    return res + dfs(son, val + sum);
 }
 
 signed main() {
@@ -26,15 +26,14 @@ signed main() {
     cin >> T;
     while (T-- > 0) {
         cin >> n;
-        for (int i = 1; i <= n; i++) g[i].clear();
-        for (int i = 2, p; i <= n; i++) {
-            cin >> p;
-            g[p].emplace_back(i);
+        for (int i = 1; i <= n; i++) g[i].clear(), siz[i] = 1;
+        for (int i = 2; i <= n; i++) {
+            cin >> fa[i];
+            g[fa[i]].emplace_back(i);
         }
+        for (int i = n; i; i--) siz[fa[i]] += siz[i];
 
-        ans = 0;
-        dfs(1);
-        cout << ans << '\n';
+        cout << dfs(1, 0) << '\n';
     }
     return 0;
 }
