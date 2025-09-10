@@ -12,6 +12,7 @@
         "valarray": "cpp",
         "utility": "cpp",
         "random": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "ratio": "cpp"
     }
 }
