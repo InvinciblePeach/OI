@@ -1,2 +1,5 @@
 *.out
+*.in
+*.ans
 tmp.*
+DL24-TJY/
