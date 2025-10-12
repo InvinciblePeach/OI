@@ -10,7 +10,7 @@ vector<int> g[MAXN];
 
 struct Edge {
     int u, v;
-} e[MAXN];
+} e[MAXN << 1];
 
 signed main() {
     ios::sync_with_stdio(0);
