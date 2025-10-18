@@ -3,7 +3,7 @@
 
 using namespace std;
 
-const int MOD = 123456789;
+const int mod = 123456789;
 int T;
 
 inline int read() {
@@ -14,7 +14,7 @@ inline int read() {
         c = char(getchar());
     }
     while (c >= '0' && c <= '9') {
-        x = (x * 10 % MOD + c - '0') % MOD;
+        x = (x * 10 % mod + c - '0') % mod;
         c = char(getchar());
     }
     return x * flag;
@@ -22,9 +22,9 @@ inline int read() {
 
 signed main() {
     T = read();
-    while (T --> 0) {
+    while (T-- > 0) {
         int a = read(), b = read(), c = read();
-        if (a * b % MOD == c) {
+        if (a * b % mod == c) {
             cout << "YES" << endl;
         } else {
             cout << "NO" << endl;
