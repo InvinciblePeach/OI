@@ -101,9 +101,10 @@ signed main() {
         int rt = 0, res = 0;
         for (int j = 0; j < k; j++) {
             int v = getedge(rt, t[j]);
-            v ? rt = v : rt = nxt[0][rt];
-            if (j >= r) {
-                if (dep[rt] >= j - l + 1) res += siz[rt];
+            while (rt && !v) rt = nxt[0][rt], v = getedge(rt, t[j]);
+            rt = v;
+            if (j >= r && dep[rt] >= j - l + 1) {
+                res += siz[rt];
                 auto u = rt;
                 for (int p = 24; ~p; p--)
                     if (dep[nxt[p][u]] >= j - l + 1) res += sum[p][u], u = nxt[p][u];
