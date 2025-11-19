@@ -4,8 +4,8 @@ using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
-const int MAXN = 4e5 + 10;
-int n, k, rt, S, ans, a[MAXN], siz[MAXN], mx[MAXN];
+const int MAXN = 2e5 + 10;
+int n, k, rt, S, ans = INT_MAX, a[MAXN], siz[MAXN], mx[MAXN];
 bitset<MAXN> vis, use;
 vector<int> g[MAXN], pos[MAXN];
 
@@ -38,7 +38,7 @@ void bfs(int s) {
     vis[a[s]] = 1;
     auto push = [&](int k) {
         for (auto u : pos[k]) {
-            if (!use[u]) return cerr << ':' << k << '\n', true;
+            if (!use[u]) return true;
             q.emplace(u);
         }
         cnt++;
@@ -58,7 +58,7 @@ void bfs(int s) {
 
 void solve(int u) {
     vis[u] = 1;
-    dfs(u, 0);
+    dfs(u, u);
     bfs(u);
     while (top) use[st[top]] = 0, top--;
     for (auto v : g[u]) {
