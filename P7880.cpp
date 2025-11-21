@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
+#define int long long
 
 using namespace std;
 using ll = long long;
 using pii = pair<int, int>;
 
 const int MAXN = 1e5 + 10, MAXM = 5e5 + 10;
-int n, q, ans[MAXN];
-map<int, int> pos;
+int n, q, ans[MAXM];
+unordered_map<int, int> pos;
 vector<pii> g[MAXN], vec[MAXN];
 
 namespace dsu {
@@ -97,7 +98,7 @@ struct Query {
     int l, r, id;
 
     bool operator<(const Query &o) const { return r < o.r; }
-} qry[MAXN];
+} qry[MAXM];
 
 signed main() {
     ios::sync_with_stdio(0);
@@ -117,7 +118,7 @@ signed main() {
             if (l > pos[c]) fenwick::add(n - pos[c] + 1, -1), fenwick::add(n - (pos[c] = l) + 1, 1);
         for (; j <= q && qry[j].r <= i; j++) ans[qry[j].id] = fenwick::query(n - qry[j].l + 1);
     }
-    for (int i = 1; i <= n; i++) cout << ans[i] << '\n';
+    for (int i = 1; i <= q; i++) cout << ans[i] << '\n';
 
     return 0;
 }
