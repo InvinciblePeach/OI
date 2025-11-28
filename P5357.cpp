@@ -1,66 +1,78 @@
 #include <bits/stdc++.h>
 
 using namespace std;
+using ll = long long;
+using pii = pair<int, int>;
 
-int n, tot;
-int trie[200005][26], next_[200005], ans[200005], end_[200005];
-vector<int> num[200005];
-string t;
+const int MAXN = 2e5 + 10;
+int n, tot, t[MAXN][26], nxt[MAXN], deg[MAXN], cnt[MAXN], ans[MAXN];
+vector<int> ed[MAXN];
 
-void insert(const string & s, int i) {
-    int root = 0;
+void insert(const string &s, int id) {
+    int rt = 0;
     for (auto c : s) {
-        int tmp = c - 'a';
-        if (!trie[root][tmp]) { trie[root][tmp] = ++ tot; }
-        root = trie[root][tmp];
+        if (!t[rt][c - 'a']) t[rt][c - 'a'] = ++tot;
+        rt = t[rt][c - 'a'];
     }
-    end_[root] = true;
-    num[root].emplace_back(i);
+    ed[rt].emplace_back(id);
 }
 
 void build() {
     queue<int> q;
-    for (int i = 0; i < 26; i ++) {
-        if (trie[0][i]) { q.emplace(trie[0][i]); }
-    }
+    for (int i = 0; i < 26; i++)
+        if (t[0][i]) q.emplace(t[0][i]);
     while (!q.empty()) {
-        int root = q.front();
+        auto u = q.front();
         q.pop();
-        for (int i = 0; i < 26; i ++) {
-            if (!trie[root][i]) { trie[root][i] = trie[next_[root]][i]; }
-            else {
-                next_[trie[root][i]] = trie[next_[root]][i];
-                q.emplace(trie[root][i]);
+        for (int i = 0; i < 26; i++) {
+            auto &v = t[u][i];
+            if (!v) {
+                v = t[nxt[u]][i];
+                continue;
             }
+            nxt[v] = t[nxt[u]][i];
+            deg[nxt[v]]++;
+            q.emplace(v);
         }
     }
 }
 
-int main() {
-    ios_base::sync_with_stdio(false);
-    cin >> n;
+void query(const string &s) {
+    int rt = 0;
+    for (auto c : s) {
+        rt = t[rt][c - 'a'];
+        cnt[rt]++;
+    }
+}
 
+void topu() {
+    queue<int> q;
+    for (int i = 0; i <= tot; i++)
+        if (!deg[i]) q.emplace(i);
+    while (!q.empty()) {
+        int u = q.front();
+        q.pop();
+        for (auto x : ed[u]) ans[x] += cnt[u];
+        cnt[nxt[u]] += cnt[u];
+        if (!--deg[nxt[u]]) q.emplace(nxt[u]);
+    }
+}
+
+signed main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0), cout.tie(0);
+
+    string s;
+    cin >> n;
     for (int i = 1; i <= n; i++) {
-        string s;
         cin >> s;
         insert(s, i);
-    } cin >> t;
-
-    build();
-
-    int j = 0;
-    for (auto c : t) {
-        int tmp = c - 'a';
-        j = trie[j][tmp];
-        int now = j;
-        while (now && end_[now]) {
-            if (end_[now]) {
-                for (auto i : num[now]) { ans[i] ++; }
-            }
-            now = next_[now];
-        }
     }
+    build();
+    cin >> s;
+    query(s);
+    topu();
+    for (int i = 1; i <= n; i++) cout << ans[i] << '\n';
 
-    for (int i = 1; i <= n; i ++) { cout << ans[i] << endl; }
     return 0;
 }
